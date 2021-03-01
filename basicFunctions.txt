@@ -1,0 +1,8 @@
+To show the Databases:
+SHOW DATABASES;
+
+How to create a Database:
+CREATE DATABASE giraffe;
+
+To use enter into a Database:
+USE giraffe
