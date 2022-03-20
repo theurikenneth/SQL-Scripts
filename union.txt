@@ -6,7 +6,7 @@ UNION
 SELECT branch.branch_name
 FROM branch;
 
--- Find a list of all clients & branch suppliers' names
+-- Find a listnames of all clients & branch suppliers
 SELECT client.client_name AS Non-Employee_Entities, client.branch_id AS Branch_ID
 FROM client
 UNION
