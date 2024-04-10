@@ -18,4 +18,5 @@ It is easier to run mysql once docker desktop is installed:
 1. docker pull mysql
 2. docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=<password> -d mysql
 3. docker exec -it some-mysql mysql -uroot -p
+
 Now create your database and tables. 
