@@ -11,3 +11,11 @@ This is a repo that contains a quick start for SQL beginners
 7. **nestedQueries.txt** - these are subqueries within the queries
 8. **wildcards.txt** - considers wildcards such as LIKE
 9. **triggers.txt** - creates triggers before insertion are made or tables undergo altering
+
+## New Lessons
+Instead of installing mysql as a server, just install docker desktop and then manage all applications as containers.
+It is easier to run mysql once docker desktop is installed:
+1. docker pull mysql
+2. docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=<password> -d mysql
+3. docker exec -it some-mysql mysql -uroot -p
+Now create your database and tables. 
