@@ -1,4 +1,3 @@
-
 -- CREATE
 --     TRIGGER `event_name` BEFORE/AFTER INSERT/UPDATE/DELETE
 --     ON `database`.`table`
@@ -8,13 +7,12 @@
 -- 		-- inserted/updated/deleted row
 --     END;
 
+-- This is the table that will hold the trigger messages
 CREATE TABLE trigger_test (
      message VARCHAR(100)
 );
 
-
-
-
+-- This is the SQL version of this trigger that checks when there is an insertion
 DELIMITER $$
 CREATE
     TRIGGER my_trigger BEFORE INSERT
@@ -23,20 +21,58 @@ CREATE
         INSERT INTO trigger_test VALUES('added new employee');
     END$$
 DELIMITER ;
+
+-- This is the Postgres version of this insertion trigger
+CREATE FUNCTION my_trigger() RETURNS trigger AS $$
+BEGIN
+  INSERT INTO trigger_test VALUES('added new employee');
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER my_trigger BEFORE INSERT ON employee FOR EACH ROW EXECUTE PROCEDURE my_trigger();
+
 INSERT INTO employee
 VALUES(109, 'Oscar', 'Martinez', '1968-02-19', 'M', 69000, 106, 3);
 
+-- Checking the trigger after the insertion
+select * from trigger_test;
 
+
+-- This is the SQL version of the new first_name insertion trigger
 DELIMITER $$
 CREATE
-    TRIGGER my_trigger BEFORE INSERT
+    TRIGGER first_name_trigger BEFORE INSERT
     ON employee
     FOR EACH ROW BEGIN
         INSERT INTO trigger_test VALUES(NEW.first_name);
     END$$
 DELIMITER ;
+
+-- This is the Postgres version of this trigger
+CREATE FUNCTION first_name_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO trigger_test (first_name) VALUES (NEW.first_name);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER first_name_trigger
+BEFORE INSERT ON employee
+FOR EACH ROW
+EXECUTE PROCEDURE first_name_trigger();
+
+-- Before testing the trigger, ensure to add the first_name column in the trigger_test table using this code
+ALTER TABLE trigger_test
+ADD COLUMN first_name VARCHAR(255);
+
+-- Testing the trigger using this query
 INSERT INTO employee
 VALUES(110, 'Kevin', 'Malone', '1978-02-19', 'M', 69000, 106, 3);
+
+-- Checking the trigger after the insertion
+select * from trigger_test;
+
 
 DELIMITER $$
 CREATE
